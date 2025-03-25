@@ -1,0 +1,34 @@
+sequenceDiagram
+    participant browser
+    participant server
+
+    Note left of the browser: User enters the text in the New note text area
+    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/notes/new_note [{"note": "New note entry"}]
+    activate server
+    Note right of the server: Server stores the new Note in the internal storage
+    server->>browser: 302 reply telling the browser to refresh the page
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+    activate server
+    server->>browser: HTML document
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.di/exampleapp/main.css
+    activate server
+    server->>browser: the css file 
+    deactivate server
+
+    browser->>server: GET https://studies.cs.helsinki.di/exampleapp/main.js
+    activate server
+    server->>browser: the JavaScript file
+    deactivate server
+
+    Note right of the browser: The browser starts executing the JavaScript code tha refreshes the page by fetching the JSON from the server
+
+    browser->>server: GET https://studies.cs.helsinki.di/exampleapp/data.json
+    activate server
+    server->>browser: [{ "content": "HTML is easy", "date": "2023-1-1"}, ...]
+    deactivate server
+
+    Note right of the browser: The browser executes the callback function the renders the refreshed content of the notes JSON
